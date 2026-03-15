@@ -2,6 +2,10 @@
 
 All notable changes to `:package_name` will be documented in this file.
 
+## v1.0.1 - 2026-03-15
+
+- Add terminal-style logo and ASCII banner with red gradient
+
 ## v1.0.0 - 2026-03-15
 
 Initial release
