@@ -1,24 +1,28 @@
 {
-    "name": ":vendor_slug/:package_slug",
-    "description": ":package_description",
+    "name": "marcokoepfli/laravel-patrol",
+    "description": "An opinionated linter that patrols your Laravel app for convention violations",
     "keywords": [
-        ":vendor_name",
         "laravel",
-        ":package_slug"
+        "linter",
+        "conventions",
+        "best-practices",
+        "patrol"
     ],
-    "homepage": "https://github.com/:vendor_slug/:package_slug",
+    "homepage": "https://github.com/marcokoepfli/laravel-patrol",
     "license": "MIT",
     "authors": [
         {
-            "name": ":author_name",
-            "email": "author@domain.com",
+            "name": "Marco Koepfli",
+            "email": "github@marco-koepfli.ch",
             "role": "Developer"
         }
     ],
     "require": {
-        "php": "^8.4",
+        "php": "^8.2",
+        "illuminate/contracts": "^11.0||^12.0",
+        "nikic/php-parser": "^5.0",
         "spatie/laravel-package-tools": "^1.16",
-        "illuminate/contracts": "^11.0||^12.0"
+        "symfony/finder": "^7.0"
     },
     "require-dev": {
         "laravel/pint": "^1.14",
@@ -30,19 +34,16 @@
         "pestphp/pest-plugin-laravel": "^4.0",
         "phpstan/extension-installer": "^1.4",
         "phpstan/phpstan-deprecation-rules": "^2.0",
-        "phpstan/phpstan-phpunit": "^2.0",
-        "spatie/laravel-ray": "^1.35"
+        "phpstan/phpstan-phpunit": "^2.0"
     },
     "autoload": {
         "psr-4": {
-            "VendorName\\Skeleton\\": "src/",
-            "VendorName\\Skeleton\\Database\\Factories\\": "database/factories/"
+            "MarcoKoepfli\\LaravelPatrol\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "VendorName\\Skeleton\\Tests\\": "tests/",
-            "Workbench\\App\\": "workbench/app/"
+            "MarcoKoepfli\\LaravelPatrol\\Tests\\": "tests/"
         }
     },
     "scripts": {
@@ -63,10 +64,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "VendorName\\Skeleton\\SkeletonServiceProvider"
+                "MarcoKoepfli\\LaravelPatrol\\PatrolServiceProvider"
             ],
             "aliases": {
-                "Skeleton": "VendorName\\Skeleton\\Facades\\Skeleton"
+                "Patrol": "MarcoKoepfli\\LaravelPatrol\\Facades\\Patrol"
             }
         }
     },

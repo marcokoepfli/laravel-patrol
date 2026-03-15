@@ -1,91 +1,194 @@
-# :package_description
+# Laravel Patrol
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/:vendor_slug/:package_slug.svg?style=flat-square)](https://packagist.org/packages/:vendor_slug/:package_slug)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/:vendor_slug/:package_slug/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/:vendor_slug/:package_slug/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/:vendor_slug/:package_slug/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/:vendor_slug/:package_slug/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
-[![Total Downloads](https://img.shields.io/packagist/dt/:vendor_slug/:package_slug.svg?style=flat-square)](https://packagist.org/packages/:vendor_slug/:package_slug)
-<!--delete-->
----
-This repo can be used to scaffold a Laravel package. Follow these steps to get started:
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/marcokoepfli/laravel-patrol.svg?style=flat-square)](https://packagist.org/packages/marcokoepfli/laravel-patrol)
+[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/marcokoepfli/laravel-patrol/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/marcokoepfli/laravel-patrol/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![PHPStan](https://img.shields.io/github/actions/workflow/status/marcokoepfli/laravel-patrol/phpstan.yml?branch=main&label=phpstan&style=flat-square)](https://github.com/marcokoepfli/laravel-patrol/actions?query=workflow%3APHPStan+branch%3Amain)
+[![Total Downloads](https://img.shields.io/packagist/dt/marcokoepfli/laravel-patrol.svg?style=flat-square)](https://packagist.org/packages/marcokoepfli/laravel-patrol)
 
-1. Press the "Use this template" button at the top of this repo to create a new repo with the contents of this skeleton.
-2. Run "php ./configure.php" to run a script that will replace all placeholders throughout all the files.
-3. Have fun creating your package.
-4. If you need help creating a package, consider picking up our <a href="https://laravelpackage.training">Laravel Package Training</a> video course.
----
-<!--/delete-->
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
+An opinionated linter that patrols your Laravel app for convention violations. It checks if your code follows "the Laravel way" based on official Laravel documentation and provides actionable improvement suggestions with links to the relevant docs.
 
-## Support us
+## Why Patrol?
 
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/:package_name.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/:package_name)
+Tools like Larastan catch type errors. Pint fixes code style. **Patrol checks if you're actually using Laravel the way it was designed** — Form Requests instead of inline validation, config() instead of env(), Eloquent instead of raw queries, and more.
 
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
-
-We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
+Every violation includes:
+- A clear message explaining what's wrong
+- A suggestion for how to fix it
+- A link to the relevant Laravel docs section
 
 ## Installation
 
-You can install the package via composer:
-
 ```bash
-composer require :vendor_slug/:package_slug
+composer require --dev marcokoepfli/laravel-patrol
 ```
 
-You can publish and run the migrations with:
+Optionally publish the config:
 
 ```bash
-php artisan vendor:publish --tag=":package_slug-migrations"
-php artisan migrate
-```
-
-You can publish the config file with:
-
-```bash
-php artisan vendor:publish --tag=":package_slug-config"
-```
-
-This is the contents of the published config file:
-
-```php
-return [
-];
-```
-
-Optionally, you can publish the views using
-
-```bash
-php artisan vendor:publish --tag=":package_slug-views"
+php artisan vendor:publish --tag="patrol-config"
 ```
 
 ## Usage
 
+```bash
+php artisan patrol
+```
+
+Example output:
+
+```
+INFO  Laravel Patrol v1.0 | Laravel 12 | 4 rules
+
+app/Http/Controllers/UserController.php
+  [WARNING] Inline validation: $request->validate()  :8
+            Extract validation to a Form Request class using: php artisan make:request
+            Docs: https://laravel.com/docs/12/validation#form-request-validation
+
+app/Services/ReportService.php
+  [WARNING] env() called outside of config files  :12
+            Move this env() call to a config file and use config() to retrieve the value.
+            Docs: https://laravel.com/docs/12/configuration#accessing-configuration-values
+
+Found 2 violation(s): 2 warning(s)
+```
+
+### Options
+
+```bash
+# Show everything including info-level hints
+php artisan patrol --severity=info
+
+# Run a specific rule only
+php artisan patrol --rule=no-env-outside-config
+
+# JSON output for CI pipelines
+php artisan patrol --format=json
+```
+
+## Configuration
+
 ```php
-$:variable = new VendorName\Skeleton();
-echo $:variable->echoPhrase('Hello, VendorName!');
+// config/patrol.php
+return [
+    'version' => 12,           // Your Laravel version (11, 12)
+    'preset' => 'recommended', // 'strict', 'recommended', 'relaxed'
+    'rules' => [],             // Override individual rules (FQCN => bool)
+    'paths' => ['app', 'routes', 'config', 'resources'],
+    'exclude' => ['vendor', 'node_modules', 'storage'],
+    'custom_rules' => [],      // Your own rule classes
+];
+```
+
+### Presets
+
+| Preset | Rules | Use case |
+|--------|-------|----------|
+| `relaxed` | 1 rule | Just the essentials |
+| `recommended` | 4 rules | Sensible defaults for most projects |
+| `strict` | 6 rules | Full enforcement |
+
+### Disabling a rule
+
+```php
+'rules' => [
+    \MarcoKoepfli\LaravelPatrol\Rules\NoRawQueries::class => false,
+],
+```
+
+## Built-in Rules
+
+| Rule | ID | Severity | Description |
+|------|----|----------|-------------|
+| NoEnvOutsideConfig | `no-env-outside-config` | Warning | `env()` should only be used in config files |
+| UseFormRequests | `use-form-requests` | Warning | Use Form Request classes instead of inline validation |
+| NoRawQueries | `no-raw-queries` | Info | Prefer Eloquent over raw DB queries |
+| UseResourceControllers | `use-resource-controllers` | Warning | Use `Route::resource()` for CRUD routes |
+| UseBladeComponents | `use-blade-components` | Info | Prefer Blade components over `@include` |
+| NoBusinessLogicInControllers | `no-business-logic-in-controllers` | Warning | Keep controllers thin (max 10 statements per method) |
+
+All PHP rules use AST parsing via [nikic/php-parser](https://github.com/nikic/PHP-Parser) — no regex matching. This means:
+- `env()` in strings or comments is **not** flagged
+- `$service->validate()` is **not** confused with `$request->validate()`
+- `DB::table()` and `DB::transaction()` are correctly ignored by the raw query rule
+
+## Suppressing violations
+
+Add `@patrol-ignore` on the line above or the same line:
+
+```php
+// @patrol-ignore
+$key = env('APP_KEY');
+```
+
+```blade
+{{-- @patrol-ignore --}}
+@include('partials.legacy')
+```
+
+## Custom Rules
+
+Create a class extending `AbstractRule`:
+
+```php
+use MarcoKoepfli\LaravelPatrol\Enums\LaravelVersion;
+use MarcoKoepfli\LaravelPatrol\ProjectContext;
+use MarcoKoepfli\LaravelPatrol\Rules\AbstractRule;
+
+class NoTodoComments extends AbstractRule
+{
+    public function id(): string
+    {
+        return 'no-todo-comments';
+    }
+
+    public function description(): string
+    {
+        return 'TODO comments should be resolved before merging.';
+    }
+
+    public function docsUrl(LaravelVersion $version): string
+    {
+        return 'https://your-team-wiki.com/conventions';
+    }
+
+    public function check(ProjectContext $context): array
+    {
+        $violations = [];
+
+        foreach ($context->phpFiles() as $file) {
+            // Use $context->analyzer() for AST parsing
+            // Use $this->violation() to create results
+            // Use $this->shouldIgnore() for @patrol-ignore support
+        }
+
+        return $violations;
+    }
+}
+```
+
+Register in `config/patrol.php`:
+
+```php
+'custom_rules' => [
+    \App\Patrol\NoTodoComments::class,
+],
 ```
 
 ## Testing
 
 ```bash
-composer test
+composer test       # Run tests
+composer analyse    # Run PHPStan
+composer format     # Fix code style
 ```
-
-## Changelog
-
-Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
 
 ## Contributing
 
 Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 
-## Security Vulnerabilities
-
-Please review [our security policy](../../security/policy) on how to report security vulnerabilities.
-
 ## Credits
 
-- [:author_name](https://github.com/:author_username)
+- [Marco Koepfli](https://github.com/marcokoepfli)
 - [All Contributors](../../contributors)
 
 ## License
