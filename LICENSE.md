@@ -1,6 +1,6 @@
 The MIT License (MIT)
 
-Copyright (c) Marco Koepfli <github@marco-koepfli.ch>
+Copyright (c) Marco Koepfli <marco@koepfli.dev>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
