@@ -32,7 +32,15 @@ class PatrolCommand extends Command
         $version = $patrol->version();
         $rules = $patrol->applicableRules();
 
-        $this->components->info("Laravel Patrol v1.0 | Laravel {$version->value} | {$this->countRules($rules)} rules");
+        $this->newLine();
+        $this->line('  <fg=#FF2D20>██████╗  █████╗ ████████╗██████╗  ██████╗ ██╗</>');
+        $this->line('  <fg=#FF4136>██╔══██╗██╔══██╗╚══██╔══╝██╔══██╗██╔═══██╗██║</>');
+        $this->line('  <fg=#FF6F61>██████╔╝███████║   ██║   ██████╔╝██║   ██║██║</>');
+        $this->line('  <fg=#FF8A7A>██╔═══╝ ██╔══██║   ██║   ██╔══██╗██║   ██║██║</>');
+        $this->line('  <fg=#FF9A8B>██║     ██║  ██║   ██║   ██║  ██║╚██████╔╝███████╗</>');
+        $this->line('  <fg=#FFB4A8>╚═╝     ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝ ╚══════╝</>');
+        $this->newLine();
+        $this->line('  <fg=white;options=bold>v1.0</> <fg=#555>·</> <fg=#FF2D20;options=bold>Laravel '.$version->value.'</> <fg=#555>·</> <fg=white;options=bold>'.count($rules).' rules</> <fg=#555>·</> <fg=#FF6F61>the Laravel way</>');
         $this->newLine();
 
         $results = $patrol->run();
@@ -134,10 +142,5 @@ class PatrolCommand extends Command
         }
 
         $this->components->error("Found {$results->count()} violation(s): ".implode(', ', $parts));
-    }
-
-    private function countRules(array $rules): int
-    {
-        return count($rules);
     }
 }

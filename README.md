@@ -1,9 +1,13 @@
-# Laravel Patrol
+<p align="center">
+    <img src="art/logo.svg" width="550" alt="Laravel Patrol">
+</p>
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/marcokoepfli/laravel-patrol.svg?style=flat-square)](https://packagist.org/packages/marcokoepfli/laravel-patrol)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/marcokoepfli/laravel-patrol/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/marcokoepfli/laravel-patrol/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![PHPStan](https://img.shields.io/github/actions/workflow/status/marcokoepfli/laravel-patrol/phpstan.yml?branch=main&label=phpstan&style=flat-square)](https://github.com/marcokoepfli/laravel-patrol/actions?query=workflow%3APHPStan+branch%3Amain)
-[![Total Downloads](https://img.shields.io/packagist/dt/marcokoepfli/laravel-patrol.svg?style=flat-square)](https://packagist.org/packages/marcokoepfli/laravel-patrol)
+<p align="center">
+    <a href="https://packagist.org/packages/marcokoepfli/laravel-patrol"><img src="https://img.shields.io/packagist/v/marcokoepfli/laravel-patrol.svg?style=flat-square" alt="Latest Version on Packagist"></a>
+    <a href="https://github.com/marcokoepfli/laravel-patrol/actions?query=workflow%3Arun-tests+branch%3Amain"><img src="https://img.shields.io/github/actions/workflow/status/marcokoepfli/laravel-patrol/run-tests.yml?branch=main&label=tests&style=flat-square" alt="Tests"></a>
+    <a href="https://github.com/marcokoepfli/laravel-patrol/actions?query=workflow%3APHPStan+branch%3Amain"><img src="https://img.shields.io/github/actions/workflow/status/marcokoepfli/laravel-patrol/phpstan.yml?branch=main&label=phpstan&style=flat-square" alt="PHPStan"></a>
+    <a href="https://packagist.org/packages/marcokoepfli/laravel-patrol"><img src="https://img.shields.io/packagist/dt/marcokoepfli/laravel-patrol.svg?style=flat-square" alt="Total Downloads"></a>
+</p>
 
 An opinionated linter that patrols your Laravel app for convention violations. It checks if your code follows "the Laravel way" based on official Laravel documentation and provides actionable improvement suggestions with links to the relevant docs.
 
@@ -37,19 +41,32 @@ php artisan patrol
 Example output:
 
 ```
-INFO  Laravel Patrol v1.0 | Laravel 12 | 4 rules
+  ██████╗  █████╗ ████████╗██████╗  ██████╗ ██╗
+  ██╔══██╗██╔══██╗╚══██╔══╝██╔══██╗██╔═══██╗██║
+  ██████╔╝███████║   ██║   ██████╔╝██║   ██║██║
+  ██╔═══╝ ██╔══██║   ██║   ██╔══██╗██║   ██║██║
+  ██║     ██║  ██║   ██║   ██║  ██║╚██████╔╝███████╗
+  ╚═╝     ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝ ╚══════╝
 
-app/Http/Controllers/UserController.php
-  [WARNING] Inline validation: $request->validate()  :8
-            Extract validation to a Form Request class using: php artisan make:request
-            Docs: https://laravel.com/docs/12.x/validation#form-request-validation
+  v1.0 · Laravel 12 · 4 rules · the Laravel way
 
-app/Services/ReportService.php
-  [WARNING] env() called outside of config files  :12
-            Move this env() call to a config file and use config() to retrieve the value.
-            Docs: https://laravel.com/docs/12.x/configuration#accessing-configuration-values
+  app/Http/Controllers/UserController.php ....................................
+  [WARNING] env() called outside of config files:11
+           Move this env() call to a config file and use config() to retrieve the value.
+           Docs: https://laravel.com/docs/12.x/configuration#accessing-configuration-values
+  [WARNING] Inline validation: $request->validate():12
+           Extract validation to a Form Request class using: php artisan make:request
+           Docs: https://laravel.com/docs/12.x/validation#form-request-validation
 
-Found 2 violation(s): 2 warning(s)
+  app/Services/ReportService.php .............................................
+  [WARNING] env() called outside of config files:11
+           Move this env() call to a config file and use config() to retrieve the value.
+           Docs: https://laravel.com/docs/12.x/configuration#accessing-configuration-values
+  [INFO] Raw database query: DB::select():12
+         Consider using Eloquent models and relationships instead of raw queries.
+         Docs: https://laravel.com/docs/12.x/eloquent
+
+  Found 4 violation(s): 3 warning(s), 1 info
 ```
 
 ### Options
