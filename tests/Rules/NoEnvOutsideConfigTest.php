@@ -163,6 +163,6 @@ class Broken {
 it('has correct docs URL per version', function () {
     $rule = new NoEnvOutsideConfig;
 
-    expect($rule->docsUrl(LaravelVersion::V11))->toContain('/docs/11/')
-        ->and($rule->docsUrl(LaravelVersion::V12))->toContain('/docs/12/');
+    expect($rule->docsUrl(LaravelVersion::V11))->toContain('/docs/11.x/')
+        ->and($rule->docsUrl(LaravelVersion::V12))->toContain('/docs/12.x/');
 });

@@ -42,12 +42,12 @@ INFO  Laravel Patrol v1.0 | Laravel 12 | 4 rules
 app/Http/Controllers/UserController.php
   [WARNING] Inline validation: $request->validate()  :8
             Extract validation to a Form Request class using: php artisan make:request
-            Docs: https://laravel.com/docs/12/validation#form-request-validation
+            Docs: https://laravel.com/docs/12.x/validation#form-request-validation
 
 app/Services/ReportService.php
   [WARNING] env() called outside of config files  :12
             Move this env() call to a config file and use config() to retrieve the value.
-            Docs: https://laravel.com/docs/12/configuration#accessing-configuration-values
+            Docs: https://laravel.com/docs/12.x/configuration#accessing-configuration-values
 
 Found 2 violation(s): 2 warning(s)
 ```

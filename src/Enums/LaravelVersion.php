@@ -9,7 +9,7 @@ enum LaravelVersion: int
 
     public function docsBaseUrl(): string
     {
-        return "https://laravel.com/docs/{$this->value}";
+        return "https://laravel.com/docs/{$this->value}.x";
     }
 
     public function docsUrl(string $path): string

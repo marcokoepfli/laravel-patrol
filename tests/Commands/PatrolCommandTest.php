@@ -155,6 +155,6 @@ class Service {
     ));
 
     $this->artisan('patrol')
-        ->expectsOutputToContain('https://laravel.com/docs/12/')
+        ->expectsOutputToContain('https://laravel.com/docs/12.x/')
         ->assertExitCode(0);
 });
